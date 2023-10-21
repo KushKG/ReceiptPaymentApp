@@ -8,6 +8,7 @@ def get_user(user_id):
 
     if user_doc.exists:
         user_data = user_doc.to_dict()
+        user_data['id'] = user_doc.id
         return user_data
     else:
         print(f"No user found with ID: {user_id}")
@@ -19,8 +20,9 @@ def get_receipt(receipt_id):
     receipt_doc = receipt_doc_ref.get()
 
     if receipt_doc.exists:
-        user_data = receipt_doc.to_dict()
-        return user_data
+        receipt_data = receipt_doc.to_dict()
+        receipt_data['id'] = receipt_doc.id
+        return receipt_data
     else:
         print(f"No receipt found with ID: {receipt_id}")
         return None
@@ -39,3 +41,15 @@ def get_user_receipts(user_id):
     else:
         print(f"No user found with ID: {user_id}")
         return None
+
+def search_users(search):
+    users_ref = db.collection('users')
+    query = users_ref.where('name', '>=', search).where('name', '<', search + '\uf8ff')
+    query_result = query.stream()
+
+    results = []
+    for doc in  query_result:
+        data = doc.to_dict()
+        data['id'] = doc.id
+        results.append(data) 
+    return results
