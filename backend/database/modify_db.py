@@ -1,4 +1,4 @@
-from setup import db
+from backend.database.setup_db import db
 from schema import validate_receipt_data, validate_user_data
 from google.cloud import firestore
 
