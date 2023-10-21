@@ -50,5 +50,10 @@ def get_receipts(userId):
         receipts = access_db.get_user_receipts(userId)
         return jsonify({receipts})
        
+@app.route('/search/<query>', methods=['GET'])
+def search_users(query):
+    if request.method == 'GET':
+        return jsonify({'results': access_db.search_users(query)})
+
 if __name__ == '__main__':
     app.run(debug=True)
