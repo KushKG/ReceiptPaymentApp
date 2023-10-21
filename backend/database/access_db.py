@@ -1,5 +1,5 @@
 from google.cloud import firestore
-from setup import db
+from database.setup_db import db
 
 def get_user(user_id):
     users_ref = db.collection('users')
