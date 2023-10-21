@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 import firebase_admin
 from firebase_admin import credentials, db
+from database import access_db
 from PIL import Image
 import pytesseract
 import easyocr
@@ -53,6 +54,12 @@ def create_receipt(userId):
 def get_receipts(userId):
     if request.method == 'GET':
         return jsonify({"userId" : userId})
+
+
+@app.route('/search/<query>', methods=['GET'])
+def search_users(query):
+    if request.method == 'GET':
+        return jsonify({'results': access_db.search_users(query)})
     
 if __name__ == '__main__':
     app.run(debug=True)
