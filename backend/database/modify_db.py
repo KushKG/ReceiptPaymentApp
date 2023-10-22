@@ -70,7 +70,8 @@ def delete_user_item(user_id, receipt_id, item_name):
     data = receipt_ref.get().to_dict()
     items = data['items']
     index_to_update = next((index for index, item in enumerate(items) if item.get('name') == item_name), None)
-    items[index_to_update]['user_ids'].remove(user_id)
+    if (user_id in  items[index_to_update]['user_ids']):
+        items[index_to_update]['user_ids'].remove(user_id)
     receipt_ref.update({'items': items})
 
 

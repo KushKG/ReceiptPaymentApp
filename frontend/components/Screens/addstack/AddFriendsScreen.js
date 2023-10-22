@@ -61,7 +61,9 @@ const AddFriendsScreen = ({ route }) => {
   };
 
   const nextPressed = () => {
-    navigation.navigate('Add Split');
+    navigation.goBack();
+    navigation.goBack();
+    navigation.goBack();
   };
 
   return (
@@ -78,7 +80,7 @@ const AddFriendsScreen = ({ route }) => {
 
       <Text style={styles.title}>Search and Add Users</Text>
       <TextInput
-        placeholder="Enter a username"
+      placeholder="Enter an email"
         value={searchText}
         onChangeText={(text) => setSearchText(text)}
         style={styles.usernameInput}

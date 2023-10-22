@@ -10,6 +10,7 @@ const HomeScreen = ({ navigation }) => {
     const [receipts, setReceipts] = useState([]);
 
     useEffect(() => {
+
         const getReceipts = async () => {
             try {
                 console.log(userRef.id);
@@ -22,8 +23,16 @@ const HomeScreen = ({ navigation }) => {
                 console.log(error);
             }
         };
-        getReceipts();
-    }, []);
+
+        const unsubscribe = navigation.addListener('focus', () => {
+            getReceipts();
+
+        });
+
+        return () => {
+            unsubscribe();
+          };
+    }, [navigation]);
 
     return (
         <View style={styles.container}>

@@ -51,7 +51,7 @@ def upload_receipt_data(userId):
     if user_list == '':
         return jsonify({'message': 'No user list'})
     
-    img = Image.open(image)
+    img = Image.open('receipt1.jpeg')
     parsed_text = pytesseract.image_to_string(img)
 
     item_pattern = re.compile(r'^(.*?) (\d{12}) (\d+\.\d{2}) [PX]$', re.MULTILINE)

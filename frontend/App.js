@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, LogBox } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
 import LandingScreen from './components/Screens/landingstack/LandingScreen';
@@ -12,6 +12,9 @@ const Stack = createStackNavigator();
 
 
 export default function App() {
+  console.disableYellowBox = true;
+  LogBox.ignoreLogs(['Warning: ...']);
+
   return (
     <NavigationContainer>
     <Stack.Navigator initialRouteName="LogIn" screenOptions={{

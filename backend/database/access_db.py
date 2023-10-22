@@ -44,7 +44,7 @@ def get_user_receipts(user_id):
 
 def search_users(search):
     users_ref = db.collection('users')
-    query = users_ref.where('name', '>=', search).where('name', '<', search + '\uf8ff')
+    query = users_ref.where('email', '>=', search).where('email', '<', search + '\uf8ff')
     query_result = query.stream()
 
     results = []
