@@ -3,35 +3,63 @@ import { View, Text, TextInput, Button, Alert, StyleSheet } from 'react-native';
 
 import CustomButton from '../../CustomButton';
 
+
 const AddFriendsScreen = ({ route }) => {
   const { photoUri, navigation } = route.params;
   const [searchText, setSearchText] = useState('');
+  const [idList, setIdList] = useState([]); // [1, 2, 3
   const [userList, setUserList] = useState([]);
   const [receiptName, setReceiptName] = useState('');
 
-  const addUser = () => {
-    if (searchText.trim() === '') {
-      Alert.alert('Invalid User', 'Please enter a valid username.');
-      return;
+  const addUser = async () => {
+    try {
+      if (searchText.trim() === '') {
+        Alert.alert('Invalid User', 'Please enter a valid username.');
+        return;
+      }
+  
+      if (userList.some((user) => user === searchText)) {
+        Alert.alert('User Already Added', 'This user is already in the list.');
+        return;
+      }
+      const response = await fetch('http://172.20.10.3:5000/search/' + searchText);
+      if (!response.ok) {
+        throw new Error('Network request failed');
+      }
+      const data = await response.json();
+      if (data.results.length === 0) {
+        Alert.alert('User Not Found', 'Please enter a valid username.');
+        return;
+      }
+      setIdList([...idList, data.results[0].id]);
+      setUserList([...userList, data.results[0].name]);
+      setSearchText('');
+    } catch (error) {
+      console.log(error);
     }
-
-    if (userList.some((user) => user === searchText)) {
-      Alert.alert('User Already Added', 'This user is already in the list.');
-      return;
-    }
-
-    setUserList([...userList, searchText]);
-    setSearchText('');
   };
 
-  const uploadData = () => {
-    // Upload the data to the backend
-    // ...
-    // ...
+  const uploadData = async () => {
+    const formData = new FormData();
+    formData.append("image", { uri: photoUri, name: 'test_receipt.jpg', type: 'image/jpg' });
+    formData.append("receipt_name", receiptName);
+    formData.append("user_list", idList);
+
+    const response = await fetch('http://172.20.10.3:5000/add_receipt/rhtIUIdC8qVuY7bgE23d', {
+      method: 'POST',
+      body: formData,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    const data = await response.json();
+    console.log(data);
+
+    nextPressed();
   };
 
   const nextPressed = () => {
-    navigation.navigate('Add Split', { photoUri, navigation, userList, receiptName });
+    navigation.navigate('Add Split');
   };
 
   return (
@@ -63,7 +91,7 @@ const AddFriendsScreen = ({ route }) => {
       </View>
 
       <View style={styles.nextButtonContainer}>
-        <CustomButton label="Next" onPress={nextPressed} />
+        <CustomButton label="Next" onPress={uploadData} />
       </View>
     </View>
   );
