@@ -1,4 +1,4 @@
-from modify_db import create_receipt, create_user, add_receipt_to_user, delete_user_from_receipt
+from modify_db import create_receipt, create_user, add_receipt_to_user, delete_user_from_receipt, add_user_to_item
 from datetime import datetime
 from access_db import get_user, get_user_receipts
 
@@ -35,6 +35,7 @@ user_data = {
 # delete_user_from_receipt("rhtIUIdC8qVuY7bgE23d", "CiU3HTe3Af9vBYUI9akm")
 
 # print(get_user("rhtIUIdC8qVuY7bgE23d"))
-print(get_user_receipts("6OACw4ck88d20TvRFsTO"))
+# print(get_user_receipts("6OACw4ck88d20TvRFsTO"))
+add_user_to_item("rhtIUIdC8qVuY7bgE23d", "W4ejTKQoeld7awPmcfBm", "6 WING PLATE")
 
 

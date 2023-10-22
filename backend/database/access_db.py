@@ -53,3 +53,14 @@ def search_users(search):
         data['id'] = doc.id
         results.append(data) 
     return results
+
+# def calculate_user_total(user_id, receipt_id):
+#     receipts_ref = db.collection('receipts')
+#     receipt_doc_ref = receipts_ref.document(receipt_id)
+#     receipt_doc = receipt_doc_ref.get()
+#     if receipt_doc.exists:
+#         receipt_data = receipt_doc.to_dict()
+#         int total = 0;
+#         for item in receipt_data.items:
+#             for users in receipt_data.items
+

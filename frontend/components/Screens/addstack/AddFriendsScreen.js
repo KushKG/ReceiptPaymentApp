@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, Alert, StyleSheet } from 'react-native';
+import host from '../../../config'
+import { userRef } from '../../../database/firebase-auth';
 
 import CustomButton from '../../CustomButton';
 
@@ -22,7 +24,7 @@ const AddFriendsScreen = ({ route }) => {
         Alert.alert('User Already Added', 'This user is already in the list.');
         return;
       }
-      const response = await fetch('http://172.20.10.3:5000/search/' + searchText);
+      const response = await fetch(host + '/search/' + searchText);
       if (!response.ok) {
         throw new Error('Network request failed');
       }
@@ -45,7 +47,7 @@ const AddFriendsScreen = ({ route }) => {
     formData.append("receipt_name", receiptName);
     formData.append("user_list", idList);
 
-    const response = await fetch('http://172.20.10.3:5000/add_receipt/rhtIUIdC8qVuY7bgE23d', {
+    const response = await fetch(host + '/add_receipt/' + userRef.id, {
       method: 'POST',
       body: formData,
       headers: {

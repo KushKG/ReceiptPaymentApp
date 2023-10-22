@@ -48,4 +48,31 @@ def delete_user_from_receipt(user_id, receipt_id):
     user_ref.update({'receipt_ids': firestore.ArrayRemove([receipt_id])})
     receipt_ref.update({'collaborator_ids': firestore.ArrayRemove([user_id])})
 
+def add_user_to_item(user_id, receipt_id, item_name):
+    receipt_ref = db.collection('receipts').document(receipt_id)
+    data = receipt_ref.get().to_dict()
+    items = data['items']
+    index_to_update = next((index for index, item in enumerate(items) if item.get('name') == item_name), None)
+
+    if index_to_update is not None:
+        if (user_id not in items[index_to_update]['user_ids']):
+            items[index_to_update]['user_ids'].append(user_id)
+
+
+        # Update the document in Firestore
+        receipt_ref.update({'items': items})
+        print('Item updated successfully')
+    else:
+        print('Item not found in the list')
+
+def delete_user_item(user_id, receipt_id, item_name):
+    receipt_ref = db.collection('receipts').document(receipt_id)
+    data = receipt_ref.get().to_dict()
+    items = data['items']
+    index_to_update = next((index for index, item in enumerate(items) if item.get('name') == item_name), None)
+    items[index_to_update]['user_ids'].remove(user_id)
+    receipt_ref.update({'items': items})
+
+
+
     

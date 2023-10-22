@@ -6,7 +6,7 @@ import re
 from datetime import datetime
 
 from database import access_db
-from database import access_db
+from database import modify_db
 from database.setup_db import db
 from database.modify_db import create_receipt
 
@@ -57,7 +57,6 @@ def upload_receipt_data(userId):
     item_pattern = re.compile(r'^(.*?) (\d{12}) (\d+\.\d{2}) [PX]$', re.MULTILINE)
         
     matches = item_pattern.findall(parsed_text)
-    print("here")
     item_list = []
     for match in matches:
         name_item = match[0]
@@ -102,5 +101,70 @@ def search_users(query):
     if request.method == 'GET':
         return jsonify({'results': access_db.search_users(query)})
 
+@app.route('/send_items/<userId>/<receiptId>', methods=['POST'])
+def send_items(userId, receiptId):
+    # print("send_items")
+
+    if request.method == 'POST':
+        data = request.get_json()
+        print(data)
+        receipt = access_db.get_receipt(receiptId)
+        for item in receipt['items']:
+            print(data)
+            print(item['name'])
+            if (item['name'] in data):
+                modify_db.add_user_to_item(userId, receiptId, item['name'])
+            else:
+                modify_db.delete_user_item(userId, receiptId, item['name'])
+        
+        return jsonify({"userId" : userId, "receiptId" : receiptId})
+
+@app.route('/getTotal/<receiptId>/<userId>', methods=['GET'])
+def getTotal(receiptId, userId):
+    receipt = get_receipt(receiptId)
+    
+    if userId != receipt['owner_id']:
+        return jsonify({"total": getTotalForCollaborator(receipt, userId)})
+    else:
+        return jsonify({"total": getTotalToBePaidToOwner(receipt, userId)})
+    
+def getTotalToBePaidToOwner(receipt, userId):    
+    receipt_items = receipt['items']
+    receipt_collaborators = receipt['collaborator_ids']
+    
+    totalForCollaborators = 0
+    
+    for collaboratorId in receipt_collaborators:
+        totalForCollaborators += getTotalForCollaborator(receipt, collaboratorId)
+        
+   
+    return totalForCollaborators
+
+def getTotalForCollaborator(receipt, userId):
+    receipt_items = receipt['items']
+    
+    total = 0
+    
+    for item in receipt_items:
+        user_ids_for_item = item['user_ids']
+        num_users_sharing = len(user_ids_for_item)
+        
+        if userId in user_ids_for_item:
+            total += (float(item['price'])) / num_users_sharing 
+        
+    return total
+
+@app.route('/getItems/<receiptId>/<userId>', methods=['GET'])
+def getItems(receiptId, userId):
+    if (request.method == 'GET'):
+        receipt = get_receipt(receiptId)
+        names = []
+        items = receipt['items']
+        for item in items:
+            if userId in item['user_ids']:
+                names.append(item['name'])
+    
+    return jsonify({'names': names})
+
 if __name__ == '__main__':
-    app.run(host="172.20.10.3", debug=True)
+    app.run(host="0.0.0.0", debug=True)
