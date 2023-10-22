@@ -11,7 +11,7 @@ from database.setup_db import db
 from database.modify_db import create_receipt
 
 app = Flask(__name__)
-pytesseract.pytesseract.tesseract_cmd = 'C:/Program Files/Tesseract-OCR/tesseract.exe'
+# pytesseract.pytesseract.tesseract_cmd = 'C:/Program Files/Tesseract-OCR/tesseract.exe'
 
 @app.route('/')
 def hello_world():
@@ -77,7 +77,7 @@ def upload_receipt_data(userId):
         "items": item_list,
         "timestamp": datetime.now(),
         "owner_id": userId,
-        "collaborator_ids": user_list,
+        "collaborator_ids": user_list.split(","),
         "done_ids": []
     }
     
@@ -103,4 +103,4 @@ def search_users(query):
         return jsonify({'results': access_db.search_users(query)})
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", debug=True)
+    app.run(host="172.20.10.3", debug=True)
