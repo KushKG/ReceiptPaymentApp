@@ -7,7 +7,7 @@ receipt_schema = {
     "timestamp": datetime,
     "owner_id": str,
     "collaborator_ids": list,
-    "image_url": str,
+    # "image_url": str,
     "done_ids": list
 }
 

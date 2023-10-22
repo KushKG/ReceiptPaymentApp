@@ -1,5 +1,5 @@
-from backend.database.setup_db import db
-from schema import validate_receipt_data, validate_user_data
+from database.setup_db import db
+from database.schema import validate_receipt_data, validate_user_data
 from google.cloud import firestore
 
 def create_receipt(data):
@@ -14,6 +14,7 @@ def create_receipt(data):
     update_time, new_receipt = receipts_ref.add(data)
     curr_user_ref = users_ref.document(data['owner_id'])
     curr_user_ref.update({'receipt_ids': firestore.ArrayUnion([new_receipt.id])})
+    return new_receipt.id
 
 def create_user(data):
     # validate data
