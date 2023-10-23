@@ -1,5 +1,6 @@
 # ReceiptPaymentApp
 
+https://github.com/KushKG/ReceiptPaymentApp/assets/76886160/89982b97-b9f1-4178-bfdd-0ae5f991c263
 
 ## Inspiration
 As college students, we often shop with our roommates and have to split costs. It can become a hassle, and it's tedious and cumbersome to calculate how much everyone owes. For that reason, we came up with an easy and quick way for everyone to streamline expense splitting.
@@ -24,7 +25,3 @@ Looking ahead, we plan to enhance Payback by incorporating additional features b
 
 ## Built With
 firebase, flask, git, javascript, nosql, pytesseract, python, pytorch, react-native
-
-
-https://github.com/KushKG/ReceiptPaymentApp/assets/76886160/89982b97-b9f1-4178-bfdd-0ae5f991c263
-
