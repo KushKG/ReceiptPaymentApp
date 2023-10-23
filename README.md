@@ -1,4 +1,7 @@
 # ReceiptPaymentApp
+
+[![Watch the video](https://img.youtube.com/vi/T-D1KVIuvjA/maxresdefault.jpg)](https://youtu.be/DwUPXORsxoM?si=Ye4aZUX5JbcX-JZA)
+
 ## Inspiration
 As college students, we often shop with our roommates and have to split costs. It can become a hassle, and it's tedious and cumbersome to calculate how much everyone owes. For that reason, we came up with an easy and quick way for everyone to streamline expense splitting.
 
